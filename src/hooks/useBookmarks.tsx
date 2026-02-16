@@ -48,12 +48,13 @@ export function useBookmarks(userId: string | undefined) {
     };
   }, [userId, fetchBookmarks]);
 
-  const addBookmark = async (title: string, url: string) => {
+  const addBookmark = async (title: string, url: string, tags: string[] = []) => {
     if (!userId) return;
     const { error } = await supabase.from("bookmarks").insert({
       title,
       url,
       user_id: userId,
+      tags,
     });
     if (error) {
       toast.error("Failed to add bookmark");
