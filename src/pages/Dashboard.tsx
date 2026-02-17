@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Bookmark, LogOut, Search, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +16,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ userId, userEmail, onSignOut }: DashboardProps) {
-  const { bookmarks, loading, addBookmark, deleteBookmark } = useBookmarks(userId);
+  const { bookmarks, loading, addBookmark, updateBookmark, deleteBookmark } = useBookmarks(userId);
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
@@ -52,10 +53,11 @@ export default function Dashboard({ userId, userEmail, onSignOut }: DashboardPro
               Smart Bookmarks
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {userEmail && (
               <span className="text-sm text-muted-foreground hidden sm:block truncate max-w-[200px]">{userEmail}</span>
             )}
+            <ThemeToggle />
             <Button variant="ghost" size="icon" onClick={onSignOut} aria-label="Sign out" className="rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors">
               <LogOut className="w-4 h-4" />
             </Button>
@@ -165,7 +167,7 @@ export default function Dashboard({ userId, userEmail, onSignOut }: DashboardPro
           <div className="space-y-3">
             <AnimatePresence mode="popLayout">
               {filtered.map((b) => (
-                <BookmarkCard key={b.id} bookmark={b} onDelete={deleteBookmark} onTagClick={handleTagClick} />
+                <BookmarkCard key={b.id} bookmark={b} onDelete={deleteBookmark} onUpdate={updateBookmark} onTagClick={handleTagClick} />
               ))}
             </AnimatePresence>
           </div>
