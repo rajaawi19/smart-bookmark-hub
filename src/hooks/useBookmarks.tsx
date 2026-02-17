@@ -63,6 +63,15 @@ export function useBookmarks(userId: string | undefined) {
     }
   };
 
+  const updateBookmark = async (id: string, updates: { title?: string; url?: string; tags?: string[] }) => {
+    const { error } = await supabase.from("bookmarks").update(updates).eq("id", id);
+    if (error) {
+      toast.error("Failed to update bookmark");
+    } else {
+      toast.success("Bookmark updated");
+    }
+  };
+
   const deleteBookmark = async (id: string) => {
     const { error } = await supabase.from("bookmarks").delete().eq("id", id);
     if (error) {
@@ -72,5 +81,5 @@ export function useBookmarks(userId: string | undefined) {
     }
   };
 
-  return { bookmarks, loading, addBookmark, deleteBookmark };
+  return { bookmarks, loading, addBookmark, updateBookmark, deleteBookmark };
 }
