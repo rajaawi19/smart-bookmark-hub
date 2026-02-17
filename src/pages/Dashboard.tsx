@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { AddBookmarkForm } from "@/components/AddBookmarkForm";
 import { BookmarkCard } from "@/components/BookmarkCard";
+import { ImportExportBookmarks } from "@/components/ImportExportBookmarks";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -141,6 +142,7 @@ export default function Dashboard({ userId, userEmail, onSignOut }: DashboardPro
             <p className="text-xs text-muted-foreground">
               {filtered.length} of {bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""}
             </p>
+            <ImportExportBookmarks bookmarks={bookmarks} onImport={addBookmark} />
           </motion.div>
         )}
 
