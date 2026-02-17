@@ -3,6 +3,17 @@ import { ExternalLink, Trash2, Pencil, Check, X, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { Tables } from "@/integrations/supabase/types";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -171,15 +182,35 @@ export function BookmarkCard({ bookmark, onDelete, onUpdate, onTagClick }: Bookm
         >
           <Pencil className="w-4 h-4" />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => onDelete(bookmark.id)}
-          className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all rounded-lg"
-          aria-label="Delete bookmark"
-        >
-          <Trash2 className="w-4 h-4" />
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all rounded-lg"
+              aria-label="Delete bookmark"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete bookmark?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete "<span className="font-medium text-foreground">{bookmark.title}</span>". This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="rounded-lg">Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => onDelete(bookmark.id)}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-lg"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </motion.div>
   );
